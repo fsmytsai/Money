@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-
 import com.fsmytsai.money.R
 import com.fsmytsai.money.ui.activity.MainActivity
 import kotlinx.android.synthetic.main.fragment_login.view.*

@@ -3,12 +3,10 @@ package com.fsmytsai.money.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
 import com.fsmytsai.money.R
-
 import kotlinx.android.synthetic.main.activity_add_record.*
 
 class AddRecordActivity : AppCompatActivity() {

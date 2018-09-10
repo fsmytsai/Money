@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.fsmytsai.money.R
 import com.fsmytsai.money.model.Record
 import com.fsmytsai.money.service.app.MyDBHelper
@@ -68,13 +67,6 @@ class HomeFragment : Fragment() {
     }
 
     inner class RecordAdapter : RecyclerView.Adapter<RecordAdapter.ViewHolder>() {
-        val TYPE_FOOTER = 1
-        val TYPE_NORMAL = 2
-
-        override fun getItemViewType(position: Int): Int {
-            return if (position == itemCount - 1) TYPE_FOOTER else TYPE_NORMAL
-        }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.block_record, parent, false)
             return ViewHolder(view)
@@ -111,8 +103,9 @@ class HomeFragment : Fragment() {
                         .setPositiveButton("確定") { _, _ ->
                             mHelper.writableDatabase.delete("record", "_id=${mRecordList[position]._id}", null)
                             mRecordList.removeAt(position)
-                            mMyView.rv_record.adapter.notifyItemRemoved(position)
-                            mMyView.rv_record.adapter.notifyItemRangeChanged(position, mRecordList.size - position)
+                            mMyView.rv_record.adapter?.notifyItemRemoved(position)
+                            if (mRecordList.size - position > 0)
+                                mMyView.rv_record.adapter?.notifyItemRangeChanged(position, mRecordList.size - position)
                         }.show()
                 true
             }
@@ -149,9 +142,9 @@ class HomeFragment : Fragment() {
                             description,
                             type
                     ))
-                    mMyView.rv_record.adapter.notifyItemInserted(0)
+                    mMyView.rv_record.adapter?.notifyItemInserted(0)
                     mMyView.rv_record.scrollToPosition(0)
-                    mMyView.rv_record.adapter.notifyItemRangeChanged(0, mRecordList.size)
+                    mMyView.rv_record.adapter?.notifyItemRangeChanged(0, mRecordList.size)
                 }
                 EDIT_RECORD -> {
                     val id = data.getIntExtra("Id", 0)
@@ -167,7 +160,7 @@ class HomeFragment : Fragment() {
                     record.amount = amount
                     record.description = description
                     record.type = type
-                    mMyView.rv_record.adapter.notifyDataSetChanged()
+                    mMyView.rv_record.adapter?.notifyDataSetChanged()
                 }
             }
         }
