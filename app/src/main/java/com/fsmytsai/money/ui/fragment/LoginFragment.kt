@@ -28,12 +28,6 @@ class LoginFragment : Fragment() {
         mMyView.bt_login.setOnClickListener { _ ->
             login()
         }
-        mMyView.et_password.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                login()
-            }
-            return@setOnEditorActionListener false
-        }
     }
 
     private fun login() {
