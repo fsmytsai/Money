@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //將畫面切換至登入頁面
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fl_main_container, LoginFragment(), "LoginFragment")
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loginSuccess(){
+        //將畫面切換至主頁面
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fl_main_container, HomeFragment(), "HomeFragment")

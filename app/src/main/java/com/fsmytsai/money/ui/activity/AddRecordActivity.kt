@@ -20,47 +20,78 @@ class AddRecordActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        //設置工具列
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        //如果是修改模式
         if (intent.getBooleanExtra("Edit", false)) {
+            //設置工具列文字為修改記錄
             tv_toolBar.text = "修改記錄"
+            //取得主頁面傳過來的 Id
             mId = intent.getIntExtra("Id", 0)
+            //金額輸入框填入主頁面傳過來的金額
             et_amount.setText(intent.getIntExtra("Amount", 0).toString())
+
+            //簡介輸入框填入主頁面傳過來的簡介
             et_description.setText(intent.getStringExtra("Description"))
+
+            //如果主頁面傳過來的類型是 0(收入) 則收入的 radioButton 亮起
             if (intent.getIntExtra("Type", 0) == 0)
                 rb_income.isChecked = true
             else
+                //否則支出的出入框亮起
                 rb_expenses.isChecked = true
         }
 
+        //為 iv_save 設置點擊事件
         iv_save.setOnClickListener { _ ->
             save()
         }
     }
 
     private fun save() {
-        val type = if (rg_type.checkedRadioButtonId == R.id.rb_income) 0 else 1
+
+        //判斷金額輸入框是否為空，空的話顯示提示並跳出 save function
         if(et_amount.text.toString().isBlank()){
             Toast.makeText(this, "請輸入金額", Toast.LENGTH_SHORT).show()
             return
         }
+
+        //判斷當前亮起的是否為收入輸入框，如果是則 type 為 0 ，否則為 1
+        val type = if (rg_type.checkedRadioButtonId == R.id.rb_income) 0 else 1
+
+        //取得金額輸入框的文字並轉成數字
         val amount = et_amount.text.toString().toInt()
+
+        //取得簡介輸入框的文字
         val description = et_description.text.toString()
+
+        //新建結果意圖的物件
         val resultIntent = Intent()
+
+        //如果 Id 不是 0 則將 Id 放入結果(修改模式 Id 才不為 0)
         if (mId != 0)
             resultIntent.putExtra("Id", mId)
+
+        //將金額放入結果
         resultIntent.putExtra("Amount", amount)
+        //將類型放入結果
         resultIntent.putExtra("Type", type)
+        //將簡介放入結果
         resultIntent.putExtra("Description", description)
+        //設置結果為成功
         setResult(Activity.RESULT_OK, resultIntent)
+        //關閉畫面
         finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
 
+        //如果點擊的為返回鈕則返回
         if (id == android.R.id.home) {
             onBackPressed()
 
