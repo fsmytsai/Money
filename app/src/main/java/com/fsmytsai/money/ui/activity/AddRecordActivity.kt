@@ -36,13 +36,13 @@ class AddRecordActivity : AppCompatActivity() {
                 sp_from.visibility = View.VISIBLE
         }
 
-        //下拉式選單的資料陣列
+        //支出類型的資料陣列
         val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
         val arrayAdapter = ArrayAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 fromArray)
 
-        //設置下拉式選單資料來源
+        //設置支出類型下拉式選單資料來源
         sp_from.adapter = arrayAdapter
 
         //如果是修改模式
