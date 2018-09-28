@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.fsmytsai.money.R
 import kotlinx.android.synthetic.main.activity_add_record.*
@@ -26,6 +27,15 @@ class AddRecordActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        //下拉式選單的資料陣列
+        val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
+        val arrayAdapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                fromArray)
+
+        //設置下拉式選單資料來源
+        sp_from.adapter = arrayAdapter
+
         //如果是修改模式
         if (intent.getBooleanExtra("Edit", false)) {
             //設置工具列文字為修改記錄
@@ -42,7 +52,7 @@ class AddRecordActivity : AppCompatActivity() {
             if (intent.getIntExtra("Type", 0) == 0)
                 rb_income.isChecked = true
             else
-                //否則支出的出入框亮起
+            //否則支出的出入框亮起
                 rb_expenses.isChecked = true
         }
 
@@ -55,7 +65,7 @@ class AddRecordActivity : AppCompatActivity() {
     private fun save() {
 
         //判斷金額輸入框是否為空，空的話顯示提示並跳出 save function
-        if(et_amount.text.toString().isBlank()){
+        if (et_amount.text.toString().isBlank()) {
             Toast.makeText(this, "請輸入金額", Toast.LENGTH_SHORT).show()
             return
         }
