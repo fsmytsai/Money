@@ -32,11 +32,20 @@ class LoginFragment : Fragment() {
     }
 
     private fun login() {
-        //如果帳號是 123 且密碼是 456 則登入成功
-        if (mMyView.et_account.text.toString() == "123" && mMyView.et_password.text.toString() == "456")
-            mMainActivity.loginSuccess()
-        else
+        //如果帳號不是 123
+        if (mMyView.et_account.text.toString() != "123") {
             //顯示提示
-            Toast.makeText(mMainActivity, "帳號或密碼錯誤！", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mMainActivity, "帳號錯誤！", Toast.LENGTH_SHORT).show()
+            //跳出函式
+            return
+        }
+        //如果密碼不是 456
+        if (mMyView.et_password.text.toString() != "456") {
+            //顯示提示
+            Toast.makeText(mMainActivity, "帳號錯誤！", Toast.LENGTH_SHORT).show()
+            //跳出函式
+            return
+        }
+        mMainActivity.loginSuccess()
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -89,11 +90,16 @@ class HomeFragment : Fragment() {
             //設置 tvNo 的文字
             holder.tvNo.text = "${mRecordList[position]._id}."
 
-            //根據 type 設置 tvAmount 的文字
-            holder.tvAmount.text = if (mRecordList[position].type == 0)
-                "收入：${mRecordList[position].amount}"
-            else
-                "支出：${mRecordList[position].amount}"
+            //根據 type 設置 tvAmount 的文字及顏色
+            if (mRecordList[position].type == 0) {
+                holder.tvAmount.text = "收入：${mRecordList[position].amount}"
+                holder.tvAmount.setTextColor(Color.GREEN)
+                holder.tvNo.setTextColor(Color.GREEN)
+            } else {
+                holder.tvAmount.text = "支出：${mRecordList[position].amount}"
+                holder.tvAmount.setTextColor(Color.RED)
+                holder.tvNo.setTextColor(Color.RED)
+            }
 
             //如果簡介為空則隱藏 tvDescription
             if (mRecordList[position].description.isBlank())
@@ -105,8 +111,8 @@ class HomeFragment : Fragment() {
                 holder.tvDescription.text = mRecordList[position].description
             }
 
-            //為 llRecord 設置點擊事件
-            holder.llRecord.setOnClickListener { _ ->
+            //為 btEdit 設置點擊事件
+            holder.btEdit.setOnClickListener { _ ->
                 //新建開啟 AddRecordActivity 的意圖
                 val editIntent = Intent(mMainActivity, AddRecordActivity::class.java)
                 //將修改模式設為真
@@ -156,6 +162,7 @@ class HomeFragment : Fragment() {
             val llRecord = itemView.ll_record!!
             val tvNo = itemView.tv_no!!
             val tvAmount = itemView.tv_amount!!
+            val btEdit = itemView.bt_edit!!
             val tvDescription = itemView.tv_description!!
         }
     }
