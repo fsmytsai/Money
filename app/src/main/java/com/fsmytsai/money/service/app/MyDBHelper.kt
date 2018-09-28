@@ -12,6 +12,7 @@ class MyDBHelper(context: Context, name: String, factory: SQLiteDatabase.CursorF
                 "(_id INTEGER PRIMARY KEY  NOT NULL , " +
                 "amount INTEGER NOT NULL , " +
                 "description TEXT NOT NULL , " +
+                "from_type TEXT NOT NULL , " +
                 "type INTEGER NOT NULL)")
     }
 

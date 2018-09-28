@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.fsmytsai.money.R
@@ -27,6 +28,14 @@ class AddRecordActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        //設置類型改變時顯示隱藏支出類型的下拉式選單
+        rg_type.setOnCheckedChangeListener { _, checkedId ->
+            if (checkedId == R.id.rb_income)
+                sp_from.visibility = View.GONE
+            else
+                sp_from.visibility = View.VISIBLE
+        }
+
         //下拉式選單的資料陣列
         val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
         val arrayAdapter = ArrayAdapter(this,
@@ -48,12 +57,20 @@ class AddRecordActivity : AppCompatActivity() {
             //簡介輸入框填入主頁面傳過來的簡介
             et_description.setText(intent.getStringExtra("Description"))
 
+            //設置支出類型的下拉式選單預設值
+            sp_from.setSelection(fromArray.indexOf(intent.getStringExtra("FromType")))
+
             //如果主頁面傳過來的類型是 0(收入) 則收入的 radioButton 亮起
-            if (intent.getIntExtra("Type", 0) == 0)
+            if (intent.getIntExtra("Type", 0) == 0) {
+                //隱藏支出類型下拉式選單
+                sp_from.visibility = View.GONE
                 rb_income.isChecked = true
-            else
-            //否則支出的出入框亮起
+            } else {
+                //顯示支出類型下拉式選單
+                sp_from.visibility = View.VISIBLE
+                //否則支出的出入框亮起
                 rb_expenses.isChecked = true
+            }
         }
 
         //為 iv_save 設置點擊事件
@@ -70,11 +87,14 @@ class AddRecordActivity : AppCompatActivity() {
             return
         }
 
-        //判斷當前亮起的是否為收入輸入框，如果是則 type 為 0 ，否則為 1
-        val type = if (rg_type.checkedRadioButtonId == R.id.rb_income) 0 else 1
-
         //取得金額輸入框的文字並轉成數字
         val amount = et_amount.text.toString().toInt()
+
+        //判斷當前亮起的是否為收入按鈕，如果是則 type 為 0 ，否則為 1
+        val type = if (rg_type.checkedRadioButtonId == R.id.rb_income) 0 else 1
+
+        //取得支出類型
+        val fromType = sp_from.selectedItem.toString()
 
         //取得簡介輸入框的文字
         val description = et_description.text.toString()
@@ -88,6 +108,8 @@ class AddRecordActivity : AppCompatActivity() {
 
         //將金額放入結果
         resultIntent.putExtra("Amount", amount)
+        //將支出類型放入結果
+        resultIntent.putExtra("FromType", fromType)
         //將類型放入結果
         resultIntent.putExtra("Type", type)
         //將簡介放入結果

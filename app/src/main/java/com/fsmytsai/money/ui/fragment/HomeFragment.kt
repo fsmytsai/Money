@@ -60,7 +60,8 @@ class HomeFragment : Fragment() {
                     mCursor.getInt(0),
                     mCursor.getInt(1),
                     mCursor.getString(2),
-                    mCursor.getInt(3)
+                    mCursor.getString(3),
+                    mCursor.getInt(4)
             ))
         }
     }
@@ -96,7 +97,7 @@ class HomeFragment : Fragment() {
                 holder.tvAmount.setTextColor(Color.GREEN)
                 holder.tvNo.setTextColor(Color.GREEN)
             } else {
-                holder.tvAmount.text = "支出：${mRecordList[position].amount}"
+                holder.tvAmount.text = "支出(${mRecordList[position].fromType})：${mRecordList[position].amount}"
                 holder.tvAmount.setTextColor(Color.RED)
                 holder.tvNo.setTextColor(Color.RED)
             }
@@ -123,6 +124,8 @@ class HomeFragment : Fragment() {
                 editIntent.putExtra("Amount", mRecordList[position].amount)
                 //放入類型
                 editIntent.putExtra("Type", mRecordList[position].type)
+                //放入支出類型
+                editIntent.putExtra("FromType", mRecordList[position].fromType)
                 //放入簡介
                 editIntent.putExtra("Description", mRecordList[position].description)
                 //開啟頁面，請求值為 EDIT_RECORD
@@ -175,14 +178,16 @@ class HomeFragment : Fragment() {
                 //新增紀錄
                 ADD_RECORD -> {
                     //將從 AddRecordActivity 取得的結果資料帶入變數
-                    val type = data.getIntExtra("Type", 0)
                     val amount = data.getIntExtra("Amount", 0)
+                    val type = data.getIntExtra("Type", 0)
+                    val fromType = data.getStringExtra("FromType")
                     val description = data.getStringExtra("Description")
 
                     //將資料新增進資料庫
                     val values = ContentValues()
                     values.put("amount", amount)
                     values.put("description", description)
+                    values.put("from_type", fromType)
                     values.put("type", type)
                     val id = mHelper.writableDatabase.insert("record", null, values)
 
@@ -191,6 +196,7 @@ class HomeFragment : Fragment() {
                             id.toInt(),
                             amount,
                             description,
+                            fromType,
                             type
                     ))
 
@@ -205,14 +211,16 @@ class HomeFragment : Fragment() {
                 EDIT_RECORD -> {
                     //將從 AddRecordActivity 取得的結果資料帶入變數
                     val id = data.getIntExtra("Id", 0)
-                    val type = data.getIntExtra("Type", 0)
                     val amount = data.getIntExtra("Amount", 0)
+                    val type = data.getIntExtra("Type", 0)
+                    val fromType = data.getStringExtra("FromType")
                     val description = data.getStringExtra("Description")
 
                     //將資料依據 _id 更新進資料庫
                     val values = ContentValues()
                     values.put("amount", amount)
                     values.put("description", description)
+                    values.put("from_type", fromType)
                     values.put("type", type)
                     mHelper.writableDatabase.update("record", values, "_id=$id", null)
 
@@ -222,6 +230,7 @@ class HomeFragment : Fragment() {
                     //依序變更
                     record.amount = amount
                     record.description = description
+                    record.fromType = fromType
                     record.type = type
 
                     //告訴 rv_record 的資料源，整個資料列有變動
