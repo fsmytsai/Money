@@ -110,7 +110,7 @@ holder.tvAmount.text = "支出(${mRecordList[position].fromType})：${mRecordLis
 editIntent.putExtra("FromType", mRecordList[position].fromType)
 ```
 
-## 修改時預設支出來源為儲存的資料及顯示隱藏下拉式選單(AddRecordActivity.kt)
+## 修改時預設支出類型及顯示隱藏下拉式選單(AddRecordActivity.kt)
 
 ```kotlin
 sp_from.setSelection(fromArray.indexOf(intent.getStringExtra("FromType")))
