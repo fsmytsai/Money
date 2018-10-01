@@ -104,7 +104,7 @@ record.fromType = fromType
 holder.tvAmount.text = "支出(${mRecordList[position].fromType})：${mRecordList[position].amount}"
 ```
 
-## 將支出來源放入修改資料(HomeFragment.kt)
+## 將支出類型放入修改資料(HomeFragment.kt)
 
 ```kotlin
 editIntent.putExtra("FromType", mRecordList[position].fromType)
