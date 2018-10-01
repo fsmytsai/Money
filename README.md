@@ -33,7 +33,7 @@ mRecordList.add(0, Record(
         id.toInt(),
         amount,
         description,
-        fromType,
+        "",
         type
 ))
 ```
