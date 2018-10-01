@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
         //如果密碼不是 456
         if (mMyView.et_password.text.toString() != "456") {
             //顯示提示
-            Toast.makeText(mMainActivity, "帳號錯誤！", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mMainActivity, "密碼錯誤！", Toast.LENGTH_SHORT).show()
             //跳出函式
             return
         }
