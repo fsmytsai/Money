@@ -110,19 +110,8 @@ holder.tvAmount.text = "支出(${mRecordList[position].fromType})：${mRecordLis
 editIntent.putExtra("FromType", mRecordList[position].fromType)
 ```
 
-## 修改時預設支出類型及顯示隱藏下拉式選單(AddRecordActivity.kt)
+## 修改時預設支出類型(AddRecordActivity.kt)
 
 ```kotlin
 sp_from.setSelection(fromArray.indexOf(intent.getStringExtra("FromType")))
-
-if (intent.getIntExtra("Type", 0) == 0) {
-    //隱藏支出類型下拉式選單
-    sp_from.visibility = View.GONE
-    rb_income.isChecked = true
-} else {
-    //顯示支出類型下拉式選單
-    sp_from.visibility = View.VISIBLE
-    //否則支出的出入框亮起
-    rb_expenses.isChecked = true
-}
 ```
