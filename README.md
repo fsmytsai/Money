@@ -43,11 +43,21 @@ mRecordList.add(0, Record(
 可放置在自己覺得適合的地方，屬性也可自由調整。
 ```xml
 <Spinner
-        android:id="@+id/sp_from"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp" />
+    android:id="@+id/sp_from"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="10dp" />
+```
+
+## 在程式碼中填入下拉式選單該有的資料(AddRecordActivity.kt)
+
+```kotlin
+val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
+var arrayAdapter = ArrayAdapter(this,
+        android.R.layout.simple_spinner_dropdown_item,
+        fromArray)
+sp_from.adapter = arrayAdapter
 ```
 
 ## 設置當選擇支出單選按鈕時才顯示下拉式選單(AddRecordActivity.kt)
@@ -59,16 +69,6 @@ rg_type.setOnCheckedChangeListener { _, checkedId ->
     else
         sp_from.visibility = View.VISIBLE
 }
-```
-
-## 在程式碼中填入下拉式選單該有的資料(AddRecordActivity.kt)
-
-```kotlin
-val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
-val arrayAdapter = ArrayAdapter(this,
-        android.R.layout.simple_spinner_dropdown_item,
-        fromArray)
-sp_from.adapter = arrayAdapter
 ```
 
 ## 將用戶選擇的結果回傳給主頁面(AddRecordActivity.kt)
@@ -114,4 +114,40 @@ editIntent.putExtra("FromType", mRecordList[position].fromType)
 
 ```kotlin
 sp_from.setSelection(fromArray.indexOf(intent.getStringExtra("FromType")))
+```
+
+# 新增收入類型功能
+
+## 新增收入類型陣列(AddRecordActivity.kt)
+
+```kotlin
+private lateinit var fromArray: Array<String>
+fromArray = if (intent.getIntExtra("Type", 0) == 0)
+    arrayOf("薪水", "投資", "零用錢", "其他")
+else
+    arrayOf("食", "衣", "住", "行", "育", "樂")
+```
+
+## 修改收入、支出單選按鈕的切換監聽事件(AddRecordActivity.kt)
+
+```kotlin
+rg_type.setOnCheckedChangeListener { _, checkedId ->
+    fromArray = if (checkedId == R.id.rb_income)
+        arrayOf("薪水", "投資", "零用錢", "其他")
+    else
+        arrayOf("食", "衣", "住", "行", "育", "樂")
+
+    arrayAdapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_dropdown_item,
+            fromArray)
+
+    //設置下拉式選單資料來源
+    sp_from.adapter = arrayAdapter
+}
+```
+
+顯示收入類型(HomeFragment.kt)
+
+```kotlin
+holder.tvAmount.text = "收入(${mRecordList[position].fromType})：${mRecordList[position].amount}"
 ```
