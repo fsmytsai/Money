@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
 
             //根據 type 設置 tvAmount 的文字及顏色
             if (mRecordList[position].type == 0) {
-                holder.tvAmount.text = "收入：${mRecordList[position].amount}"
+                holder.tvAmount.text = "收入(${mRecordList[position].fromType})：${mRecordList[position].amount}"
                 holder.tvAmount.setTextColor(Color.GREEN)
                 holder.tvNo.setTextColor(Color.GREEN)
             } else {

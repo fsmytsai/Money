@@ -21,6 +21,8 @@ class AddRecordActivity : AppCompatActivity() {
         initViews()
     }
 
+    private lateinit var fromArray: Array<String>
+
     private fun initViews() {
         //設置工具列
         setSupportActionBar(toolbar)
@@ -28,21 +30,17 @@ class AddRecordActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //設置類型改變時顯示隱藏支出類型的下拉式選單
-        rg_type.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rb_income)
-                sp_from.visibility = View.GONE
-            else
-                sp_from.visibility = View.VISIBLE
-        }
+        //資料陣列
+        fromArray = if (intent.getIntExtra("Type", 1) == 0)
+            arrayOf("薪水", "投資", "零用錢", "其他")
+        else
+            arrayOf("食", "衣", "住", "行", "育", "樂")
 
-        //支出類型的資料陣列
-        val fromArray = arrayOf("食", "衣", "住", "行", "育", "樂")
-        val arrayAdapter = ArrayAdapter(this,
+        var arrayAdapter = ArrayAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 fromArray)
 
-        //設置支出類型下拉式選單資料來源
+        //設置下拉式選單資料來源
         sp_from.adapter = arrayAdapter
 
         //如果是修改模式
@@ -72,6 +70,21 @@ class AddRecordActivity : AppCompatActivity() {
         //為 iv_save 設置點擊事件
         iv_save.setOnClickListener { _ ->
             save()
+        }
+
+        //設置類型改變時顯示隱藏支出類型的下拉式選單
+        rg_type.setOnCheckedChangeListener { _, checkedId ->
+            fromArray = if (checkedId == R.id.rb_income)
+                arrayOf("薪水", "投資", "零用錢", "其他")
+            else
+                arrayOf("食", "衣", "住", "行", "育", "樂")
+
+            arrayAdapter = ArrayAdapter(this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    fromArray)
+
+            //設置下拉式選單資料來源
+            sp_from.adapter = arrayAdapter
         }
     }
 
