@@ -62,12 +62,8 @@ class AddRecordActivity : AppCompatActivity() {
 
             //如果主頁面傳過來的類型是 0(收入) 則收入的 radioButton 亮起
             if (intent.getIntExtra("Type", 0) == 0) {
-                //隱藏支出類型下拉式選單
-                sp_from.visibility = View.GONE
                 rb_income.isChecked = true
             } else {
-                //顯示支出類型下拉式選單
-                sp_from.visibility = View.VISIBLE
                 //否則支出的出入框亮起
                 rb_expenses.isChecked = true
             }
